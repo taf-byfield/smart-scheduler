@@ -21,11 +21,11 @@ def fruit_pos(grid,num_fruits):
     placed = 0
 
     while(placed < num_fruits):
-        r = random.randint(0, rows - 1)
+        r = random.randint(0, rows - 1)     #keep placing until no more fruit
         c = random.randint(0, cols - 1)
 
         if grid[r][c] is None:
-            grid[r][c] = "F"
+            grid[r][c] = "A"
             placed += 1
     return grid
 
@@ -34,12 +34,15 @@ def display_grid(grid):
     for row in grid:
         print(" ".join(cell if cell else "." for cell in row))
 
-
-def main():
-    grid = make_grid(rows , cols)
-    robot_positions = [(0,14), (14,0)]
+def setup():
+    grid = make_grid(rows, cols)
+    robot_positions = [(0, 14), (14, 0)]
     grid = robots_pos(grid, robot_positions)
     grid = fruit_pos(grid, num_fruits)
+    return grid, robot_positions
+
+def main():
+    grid, robot_positions = setup()
     display_grid(grid)
 
 if __name__ == "__main__":
