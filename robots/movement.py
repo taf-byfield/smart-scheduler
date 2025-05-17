@@ -70,12 +70,16 @@ def movement(grid,robot_positions):
             continue
 
         valid_moves = find_valid_moves(grid,r,c)
+        #preventing back tracing
+        if robot['past_step']in valid_moves:
+            valid_moves.remove(robot['past_step'])
         if valid_moves:
-            new_row,new_col = random.choice(valid_moves)    #random movement
+            new_row, new_col = random.choice(valid_moves) #random movement 'with memory'
 
             grid[r][c] = None #make old pos avaliable
 
             #update pos of robots
+            robot['past_step'] = (r,c)
             robot_positions[i] = (new_row,new_col)
             grid[new_row][new_col] = f"R{i+1}"
 
