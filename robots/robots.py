@@ -4,13 +4,15 @@ robot1 = {
     'id': 1,
     'position':(0,14),
     'starting_point':(0,14),
-    'holding_fruit': False
+    'holding_fruit': False,
+    'past_steps': []
 }
 robot2 = {
     'id': 2,
     'position':(14,0),
     'starting_point':(14,0),
-    'holding_fruit': False
+    'holding_fruit': False,
+    'past_steps': []
 }
 #*******************************************************************************************
 
@@ -67,4 +69,4 @@ def moving(robot,fruit,grid):
             robot['position'] = (x, go_y)
             return True
 
-
+    return False
