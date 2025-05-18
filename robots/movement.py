@@ -13,8 +13,10 @@ def find_valid_moves(grid,r,c):
     for Nr,Nc in directions:
         new_row = r + Nr
         new_col = c + Nc
-        if (0 <= new_row < rows) and (0 <= new_col < cols) and (grid[new_row][new_col] is None):
-            moves.append((new_row,new_col)) #if cell is empty and less than total length of the grid
+        if (0 <= new_row < rows) and (0 <= new_col < cols):
+            cell = grid[new_row][new_col]
+            if cell != '#' and cell is None: #adjusting for barriers
+                moves.append((new_row,new_col)) #if cell is empty and less than total length of the grid
                                             # , move to new spot
 
     return moves
@@ -24,14 +26,14 @@ def find_valid_moves(grid,r,c):
 
 #return to orignal position
 def return_to_start(robot, grid):
-    if robot['holding_fruit'] == False:
+    if not robot['holding_fruit']:
         return
     x,y = robot['position']
     sx, sy = robot['starting_point']
 
     # deliver message when back at original position
     if (x, y) == (sx, sy):
-        print(f"Fruit delivered by Robot {robot['id']}")
+        print(f"Fruit delivered to base by Robot {robot['id']}")
         robot['holding_fruit'] = False
         return
 
@@ -69,25 +71,34 @@ def movement(grid,robot_positions):
             robot_positions[i] = robot['position']
             continue
 
-        step_counter = 5
+        step_counter = 4
         valid_moves = find_valid_moves(grid,r,c)
 
         #preventing back tracing
         valid_moves = [i for i in valid_moves if i not in robot['past_steps']]
-        if valid_moves:
 
+        #failsafe if trapped by memory or barrier
+        if not valid_moves:
+            print(f"Robot {robot['id']} has no valid moves, resetting at {r},{c}")
+            robot['past_steps'].clear()
+            valid_moves = find_valid_moves(grid, r, c)
+            continue
+
+        #***********************************************************
+        # RANDOM MOVEMENT LOGIC BLOCK #
+        if valid_moves:
             new_row, new_col = random.choice(valid_moves) #random movement 'with memory'
             grid[r][c] = None #make old pos avaliable
-
             #update pos of robots
             robot['past_steps'].append((r,c))
             if len(robot['past_steps']) == step_counter:
-                robot['past_steps'].pop(0)
+                robot['past_steps'].clear()
             robot_positions[i] = (new_row,new_col)
             robot['position'] = (new_row,new_col)
             grid[new_row][new_col] = f"R{i+1}"
 
             robot['position'] = (new_row, new_col) #reset
+        #***********************************************************
 
     return grid,robot_positions
 #*************************************************************************************************

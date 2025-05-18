@@ -2,8 +2,8 @@ import random
 
 cols = 15
 rows = 15
-num_fruits = 20
-barriers = 5
+num_fruits = 30
+barriers = 8
 
 def make_grid(rows ,cols):
     grid = [[None for col in range(cols)] for row in range(rows)] #printing empty grid
@@ -19,15 +19,25 @@ def robots_pos(grid, robot_positions):
 def fruit_pos(grid,num_fruits):
     rows = len(grid)
     cols = len(grid[0])
-    placed = 0
+    placed_apples = 10
+    placed_oranges = 10
 
-    while(placed < num_fruits):
+    #placed apples
+    while(placed_apples <= num_fruits):
         r = random.randint(0, rows - 1)     #keep placing until no more fruit
         c = random.randint(0, cols - 1)
 
         if grid[r][c] is None:
             grid[r][c] = "A"
-            placed += 1
+            placed_apples += 1
+
+    while (placed_oranges <= num_fruits):
+        r = random.randint(0, rows - 1)  # keep placing until no more fruit
+        c = random.randint(0, cols - 1)
+
+        if grid[r][c] is None:
+            grid[r][c] = "O"
+            placed_oranges += 1
     return grid
 
 #**********************************************************************8
@@ -49,7 +59,7 @@ def display_grid(grid):
 
 def setup():
     grid = make_grid(rows, cols)
-    robot_positions = [(0, 14), (14, 0)]
+    robot_positions = [(7, 6), (7, 8)]
     grid = robots_pos(grid, robot_positions)
     grid = fruit_pos(grid, num_fruits)
     obstacles(grid, barriers)

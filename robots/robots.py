@@ -2,15 +2,15 @@
 #defining status of each robot
 robot1 = {
     'id': 1,
-    'position':(0,14),
-    'starting_point':(0,14),
+    'position':(7,6),
+    'starting_point':(7,6),
     'holding_fruit': False,
     'past_steps': []
 }
 robot2 = {
     'id': 2,
-    'position':(14,0),
-    'starting_point':(14,0),
+    'position':(7,8),
+    'starting_point':(7,8),
     'holding_fruit': False,
     'past_steps': []
 }
@@ -25,10 +25,13 @@ def holding_fruit(robot, grid):
         new_x, new_y = x + Nx, y + Ny
 
         if (0 <= new_x < len(grid)) and (0 <= new_y < len(grid[0])):
-            if grid[new_x][new_y] == 'A':
+            if (grid[new_x][new_y] == 'A') or (grid[new_x][new_y] == 'O'):
+                if grid[new_x][new_y] == 'A':
+                    print(f"Robot{robot['id']} picked up an Apple at {new_x},{new_y}")
+                if grid[new_x][new_y] == 'O':
+                    print(f"Robot{robot['id']} picked up an Orange at {new_x},{new_y}")
                 grid[new_x][new_y] = '.'    #if fruit, then clear
                 robot['holding_fruit'] = True
-                print(f"Robot{robot['id']} picked up an apple at {new_x},{new_y}")
 
                 return True
     return False
@@ -37,7 +40,7 @@ def holding_fruit(robot, grid):
 #number of fruits left
 def fruits_left(grid):
     for row in grid:
-        if 'A' in row:
+        if 'A' or 'O' in row:
             return True
     return False
 #**********************************************************************************
@@ -47,6 +50,7 @@ def in_bounds(new_x,new_y,grid):
     if (0 <= new_x < len(grid)) and (0 <= new_y < len(grid[0])):
         if grid[new_x][new_y] != '#':
             return True
+
     return False
 #*****************************************************************************
 
