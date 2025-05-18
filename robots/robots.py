@@ -5,6 +5,8 @@ robot1 = {
     'position':(7,6),
     'starting_point':(7,6),
     'holding_fruit': False,
+    'fruit_type': None,
+    'task_complete': False,
     'past_steps': []
 }
 robot2 = {
@@ -12,6 +14,8 @@ robot2 = {
     'position':(7,8),
     'starting_point':(7,8),
     'holding_fruit': False,
+    'fruit_type': None,
+    'task_complete': False,
     'past_steps': []
 }
 #*******************************************************************************************
@@ -27,11 +31,13 @@ def holding_fruit(robot, grid):
         if (0 <= new_x < len(grid)) and (0 <= new_y < len(grid[0])):
             if (grid[new_x][new_y] == 'A') or (grid[new_x][new_y] == 'O'):
                 if grid[new_x][new_y] == 'A':
-                    print(f"Robot{robot['id']} picked up an Apple at {new_x},{new_y}")
-                if grid[new_x][new_y] == 'O':
-                    print(f"Robot{robot['id']} picked up an Orange at {new_x},{new_y}")
+                    fruit = 'apple'
+                else:
+                    fruit = 'orange'
+                print(f"Robot{robot['id']} picked up an {fruit} at {new_x},{new_y}")
                 grid[new_x][new_y] = '.'    #if fruit, then clear
                 robot['holding_fruit'] = True
+                robot['fruit_type'] = 'fruit'
 
                 return True
     return False

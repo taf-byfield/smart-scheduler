@@ -1,9 +1,10 @@
 import random
+from robots.robots import robot2
 
 cols = 15
 rows = 15
-num_fruits = 30
-barriers = 8
+num_fruits = 35
+barriers = 10
 
 def make_grid(rows ,cols):
     grid = [[None for col in range(cols)] for row in range(rows)] #printing empty grid
@@ -15,12 +16,15 @@ def robots_pos(grid, robot_positions):
             grid[r][c] = f"R{i+1}"  #robot 1 & robot 2
         return grid
 
+def occupied_pos(pos,robot2):
+    return pos == robot2['position']
+
 #fruit placement***************************************************************************
 def fruit_pos(grid,num_fruits):
     rows = len(grid)
     cols = len(grid[0])
-    placed_apples = 10
-    placed_oranges = 10
+    placed_apples = 0
+    placed_oranges = 0
 
     #placed apples
     while(placed_apples <= num_fruits):

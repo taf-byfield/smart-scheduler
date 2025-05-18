@@ -1,5 +1,7 @@
 from farm import layout
 import random
+
+from farm.layout import occupied_pos
 from robots.robots import robot1, robot2, holding_fruit
 
 
@@ -15,10 +17,11 @@ def find_valid_moves(grid,r,c):
         new_col = c + Nc
         if (0 <= new_row < rows) and (0 <= new_col < cols):
             cell = grid[new_row][new_col]
-            if cell != '#' and cell is None: #adjusting for barriers
-                moves.append((new_row,new_col)) #if cell is empty and less than total length of the grid
-                                            # , move to new spot
-
+            if cell != '#' and cell == '.': #adjusting for barriers
+                moves.append((new_row,new_col)) #if cell is empty and less than total length of the grid #
+                                                    # , move to new spot
+            if not occupied_pos((new_row,new_col),robot2):
+                moves.append((new_row,new_col))
     return moves
 #*************************************************************************************************
 
