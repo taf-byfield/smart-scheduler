@@ -3,7 +3,7 @@ import random
 
 from farm.layout import occupied_pos
 from robots.robots import robot1, robot2, holding_fruit
-
+from security.encrypt import send_message,decrypt_message, shift
 
 #define directions, up down left, right
 def find_valid_moves(grid,r,c):
@@ -17,7 +17,7 @@ def find_valid_moves(grid,r,c):
         new_col = c + Nc
         if (0 <= new_row < rows) and (0 <= new_col < cols):
             cell = grid[new_row][new_col]
-            if cell != '#' and cell == '.': #adjusting for barriers
+            if cell != '#' and cell is None: #adjusting for barriers
                 moves.append((new_row,new_col)) #if cell is empty and less than total length of the grid #
                                                     # , move to new spot
             if not occupied_pos((new_row,new_col),robot2):
@@ -35,8 +35,11 @@ def return_to_start(robot, grid):
     sx, sy = robot['starting_point']
 
     # deliver message when back at original position
+    shift = 5
     if (x, y) == (sx, sy):
-        print(f"Fruit delivered to base by Robot {robot['id']}")
+        message = f"Fruit delivered by Robot{robot['id']} at {robot['position']}"
+        encrypted_message = send_message(robot, message, shift)
+        decrypt_message(robot, encrypted_message, shift)
         robot['holding_fruit'] = False
         return
 
@@ -69,6 +72,7 @@ def movement(grid,robot_positions):
     for i,(r,c) in enumerate(robot_positions):  #fill spots if empty
         robot = robots[i]
 
+        #sending robots back to 'base' with fruits
         if robot['holding_fruit']:
             return_to_start(robot, grid)
             robot_positions[i] = robot['position']

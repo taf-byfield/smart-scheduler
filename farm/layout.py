@@ -3,7 +3,7 @@ from robots.robots import robot2
 
 cols = 15
 rows = 15
-num_fruits = 35
+num_fruits = 30
 barriers = 10
 
 def make_grid(rows ,cols):

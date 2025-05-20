@@ -27,4 +27,3 @@ def decrypt_message(robot, encrypted_message, shift):
     print(f"Decrypted message from Robot{robot['id']}: {decrypted}")
     return decrypted
 
-#print(f"Fruit delivered to base by Robot {robot['id']}")
